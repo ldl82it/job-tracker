@@ -14,6 +14,57 @@
     </header>
 
     <main class="container">
+
+      <section aria-labelledby="form-title">
+        <h2 id="form-title">Nuova candidatura</h2>
+
+        <form id="applicationForm">
+          <div>
+            <label for="company">Azienda</label>
+            <input
+              type="text"
+              id="company"
+              name="company"
+              required
+            />
+          </div>
+
+          <div>
+            <label for="role">Ruolo</label>
+            <input
+              type="text"
+              id="role"
+              name="role"
+              required
+            />
+          </div>
+
+          <div>
+            <label for="status">Stato</label>
+            <select id="status" name="status" required>
+              <option value="">Seleziona stato</option>
+              <option value="Junior">Junior</option>
+              <option value="Senior">Senior</option>
+              <option value="Inviata">Inviata</option>
+              <option value="Colloquio">Colloquio</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="date">Data</label>
+            <input
+              type="date"
+              id="date"
+              name="date"
+              required
+            />
+          </div>
+
+          <button type="submit">Aggiungi candidatura</button>
+        </form>
+      </section>
+
+
       <section aria-labelledby="list-title">
         <h2 id="list-title">Lista candidature</h2>
         <ul id="applicationsList" class="list"></ul>

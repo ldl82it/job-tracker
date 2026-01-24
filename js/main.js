@@ -1,7 +1,7 @@
 let candidatura1 = {
     company:"IBM",
     role:"Front End Developer",
-    status:"Junior", 
+    status:"Colloquio", 
     date:"19/01/2026",
     id: crypto.randomUUID()
 }
@@ -9,7 +9,7 @@ let candidatura1 = {
 let candidatura2 = {
     company:"IBM",
     role:"Full Stack Developer",
-    status:"Senior", 
+    status:"Inviata", 
     date:"15/01/2026",
     id: crypto.randomUUID()
 }
@@ -17,7 +17,7 @@ let candidatura2 = {
 let candidatura3 = {
     company:"IBM",
     role:"Back End Developer",
-    status:"Junior", 
+    status:"Standby", 
     date:"11/01/2026",
     id: crypto.randomUUID()
 }
@@ -35,7 +35,6 @@ let storageCandidature = localStorage.getItem(STORAGE_KEY);
 
 if(storageCandidature){
     candidature = JSON.parse(storageCandidature);
-    console.log("Loaded from storage:", candidature);
 }
 
 function saveCandidature(){
@@ -44,11 +43,17 @@ function saveCandidature(){
 
 
 // Renders the application list based on current state
-function renderCandidature(){
+function renderCandidature(candidatureFiltrate){
+
+    let listaDaMostrare = candidature;
+
+    if(candidatureFiltrate){
+        listaDaMostrare = candidatureFiltrate;
+    }
 
     ulCandidature.innerHTML = "";
 
-    candidature.forEach(function(candidaturaSingola) {
+    listaDaMostrare.forEach(function(candidaturaSingola) {
         let stringaCandidatura = `${candidaturaSingola.company} - ${candidaturaSingola.role} - ${candidaturaSingola.status} - ${candidaturaSingola.date}`;
 
         let liCandidatura = document.createElement("li");
@@ -191,3 +196,52 @@ function modificaCandidatura(idModificare){
 
 
 applicationForm.addEventListener('submit', submitApplicationForm);
+
+
+
+//FILTRO CANDIDATURE
+
+const bottoneFiltra = document.getElementById("filterButton");
+
+bottoneFiltra.addEventListener("click", function () {
+        let testoDaCercare = document.getElementById("searchInput").value;
+        let statoDaCercare = document.getElementById("statusFilter").value;
+
+            applicaFiltro(testoDaCercare, statoDaCercare);
+        });
+
+function applicaFiltro(testoDaCercare, statoDaCercare){
+
+    let candidatureFiltrate = candidature.filter(filtraCandidature);
+
+    function filtraCandidature(candidatura){
+        let query = testoDaCercare.trim().toLowerCase();
+        let queryStato = statoDaCercare.trim().toLowerCase();
+        let company = candidatura.company.trim().toLowerCase();
+        let role = candidatura.role.trim().toLowerCase();
+        let stato = candidatura.status.trim().toLowerCase();
+
+        let matchTesto = company.includes(query) || role.includes(query);
+        let matchStato = stato === queryStato;
+
+        if(queryStato === ""){
+            matchStato = true;
+        }
+
+        return matchTesto && matchStato;
+    }
+
+    renderCandidature(candidatureFiltrate);
+}
+
+
+//RESET FILTRO CANDIDATURE
+
+const bottoneResetFiltri = document.getElementById("resetFiltersButton");
+
+bottoneResetFiltri.addEventListener("click", function(){
+    document.getElementById("searchInput").value = "";
+    document.getElementById("statusFilter").value = "";
+
+    renderCandidature();
+});

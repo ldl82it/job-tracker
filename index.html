@@ -15,6 +15,34 @@
 
     <main class="container">
 
+
+      <section class="filters">
+        <label>
+          Cerca:
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Cerca per azienda o ruolo"
+          />
+        </label>
+
+        <label>
+          Stato:
+          <select id="statusFilter">
+            <option value="">Tutti</option>
+            <option value="Inviata">Inviata</option>
+            <option value="Colloquio">Colloquio</option>
+            <option value="Standby">Standby</option>
+            <option value="Rifiutata">Rifiutata</option>
+          </select>
+        </label>
+
+        <button type="button" id="filterButton">Filtra</button>
+        <button type="button" id="resetFiltersButton">Reset</button>
+      </section>
+
+
+
       <section aria-labelledby="form-title">
         <h2 id="form-title">Nuova candidatura</h2>
 
@@ -43,10 +71,10 @@
             <label for="status">Stato</label>
             <select id="status" name="status" required>
               <option value="">Seleziona stato</option>
-              <option value="Junior">Junior</option>
-              <option value="Senior">Senior</option>
               <option value="Inviata">Inviata</option>
               <option value="Colloquio">Colloquio</option>
+              <option value="Standby">Standby</option>
+              <option value="Rifiutata">Rifiutata</option>
             </select>
           </div>
 

@@ -29,6 +29,20 @@ const applicationForm = document.getElementById("applicationForm");
 // Application state
 let candidature = [candidatura1, candidatura2, candidatura3];
 
+// Check se c'è storage
+const STORAGE_KEY = "jobTracker_applications";
+let storageCandidature = localStorage.getItem(STORAGE_KEY);
+
+if(storageCandidature){
+    candidature = JSON.parse(storageCandidature);
+    console.log("Loaded from storage:", candidature);
+}
+
+function saveCandidature(){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(candidature));
+}
+
+
 // Renders the application list based on current state
 function renderCandidature(){
 
@@ -93,6 +107,9 @@ function submitApplicationForm(event){
 
     form.reset();
 
+    // SALVA CANDIDATURE IN BROWSER
+    saveCandidature()
+
     /* NUOVO RENDER CANDIDATURE */
     renderCandidature();
 }
@@ -108,6 +125,9 @@ function cancellaCandidatura(idCancellare){
     }
 
     candidature = newCandidature;
+
+    // SALVA CANDIDATURE IN BROWSER
+    saveCandidature()
 
     renderCandidature();
 }
@@ -162,6 +182,9 @@ function modificaCandidatura(idModificare){
     })
 
     candidature = candidatureAggiornate;
+
+    // SALVA CANDIDATURE IN BROWSER
+    saveCandidature()
 
     renderCandidature();
 }

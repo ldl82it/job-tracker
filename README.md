@@ -44,8 +44,5 @@ Open `index.html` in a browser or serve the project through a local server (e.g.
 Work in progress.
 
 Planned next steps:
-- Add delete functionality
-- Edit existing applications
-- Persist data using localStorage
 - Improve UI and styling
 - Replace prompt() editing with an HTML modal form (validated inputs for status/date)

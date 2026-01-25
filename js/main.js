@@ -29,12 +29,40 @@ const applicationForm = document.getElementById("applicationForm");
 // Application state
 let candidature = [candidatura1, candidatura2, candidatura3];
 
+// Normalizza data
+function normalizzaData(dateString) {
+  // Rimuovi spazi
+  dateString = dateString.trim();
+  
+  // Verifica se è già in formato YYYY-MM-DD
+  if (dateString.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    return dateString; // È già normalizzata!
+  }
+
+  // Assumendo formato DD/MM/YYYY (italiano)
+  const parts = dateString.split('/');
+  
+  if (parts.length !== 3) {
+    throw new Error('Formato data non valido');
+  }
+  
+  const day = parts[0].padStart(2, '0');
+  const month = parts[1].padStart(2, '0');
+  const year = parts[2];
+  
+  return `${year}-${month}-${day}`;
+}
+
 // Check se c'è storage
 const STORAGE_KEY = "jobTracker_applications";
 let storageCandidature = localStorage.getItem(STORAGE_KEY);
 
 if(storageCandidature){
-    candidature = JSON.parse(storageCandidature);
+    let candidatureDataNormalizzata = JSON.parse(storageCandidature).map(function(candidatura){
+        candidatura.date = normalizzaData(candidatura.date);
+        return candidatura;
+    })
+    candidature = candidatureDataNormalizzata;
 }
 
 function saveCandidature(){
@@ -54,7 +82,7 @@ function renderCandidature(candidatureFiltrate){
     ulCandidature.innerHTML = "";
 
     listaDaMostrare.forEach(function(candidaturaSingola) {
-        let stringaCandidatura = `${candidaturaSingola.company} - ${candidaturaSingola.role} - ${candidaturaSingola.status} - ${candidaturaSingola.date}`;
+        let stringaCandidatura = `${candidaturaSingola.company} - ${candidaturaSingola.role} - ${candidaturaSingola.status} - ${ normalizzaData(candidaturaSingola.date)}`;
 
         let liCandidatura = document.createElement("li");
         liCandidatura.dataset.id = candidaturaSingola.id;
@@ -77,6 +105,7 @@ function renderCandidature(candidatureFiltrate){
         liCandidatura.appendChild(bottoneEdit);
 
     });
+
 }
 
 // First render candidature
@@ -104,7 +133,7 @@ function submitApplicationForm(event){
         company:company,
         role:role,
         status:status, 
-        date:date,
+        date:normalizzaData(date),
         id:id
     }
 
@@ -172,7 +201,7 @@ function modificaCandidatura(idModificare){
         company:newCompany,
         role:newRole,
         status:newStatus, 
-        date:newDate,
+        date:normalizzaData(newDate),
         id:idModificare
     }
 
@@ -245,3 +274,54 @@ bottoneResetFiltri.addEventListener("click", function(){
 
     renderCandidature();
 });
+
+
+
+
+//SORTING
+
+const selectData = document.getElementById("sortBy");
+const selectOrdine = document.getElementById("sortDir");
+const statusOrdinamento = document.getElementById("listStatus");
+
+selectData.addEventListener("change", gestisciOrdinamento);
+
+selectOrdine.addEventListener("change", gestisciOrdinamento);
+
+function gestisciOrdinamento(){
+    console.log(selectData.value);
+    console.log(selectOrdine.value);
+    statusOrdinamento.textContent = "Caricamento";
+    setTimeout(function(){statusOrdinamento.textContent = "Pronto"}, 1000);
+
+    let vista = [...candidature];
+    if(typeof candidatureFiltrate !== 'undefined'){
+        vista = [...candidatureFiltrate];
+    }
+
+    let vistaOrdinata = vista;
+
+    if(selectData.value === "company"){
+        vistaOrdinata = vista.sort(function(a, b) {
+            return a.company.localeCompare(b.company);
+        });
+    }
+    else if(selectData.value === "status"){
+        vistaOrdinata = vista.sort(function(a, b) {
+            return a.status.localeCompare(b.status);
+        });
+    }
+    else if(selectData.value === "date"){
+        vistaOrdinata = vista.sort(function(a, b) {
+            return a.date.localeCompare(b.date);
+        });
+    }
+
+    if(selectOrdine.value === "desc"){
+        vistaOrdinata = vistaOrdinata.reverse();
+    }
+
+    renderCandidature(vistaOrdinata);
+    
+}
+

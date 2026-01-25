@@ -42,6 +42,26 @@
       </section>
 
 
+      <section class="filters">
+        <label>
+          Ordina:
+          <select id="sortBy">
+            <option value="">Nessuno</option>
+            <option value="date">Data</option>
+            <option value="company">Azienda</option>
+            <option value="status">Stato</option>
+          </select>
+        </label>
+
+        <label>
+          Direzione:
+          <select id="sortDir">
+            <option value="asc">Crescente</option>
+            <option value="desc">Decrescente</option>
+          </select>
+        </label>
+      </section>
+
 
       <section aria-labelledby="form-title">
         <h2 id="form-title">Nuova candidatura</h2>
@@ -95,6 +115,7 @@
 
       <section aria-labelledby="list-title">
         <h2 id="list-title">Lista candidature</h2>
+        <p id="listStatus" class="small" aria-live="polite"></p>
         <ul id="applicationsList" class="list"></ul>
       </section>
     </main>

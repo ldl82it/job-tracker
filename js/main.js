@@ -29,6 +29,17 @@ const applicationForm = document.getElementById("applicationForm");
 // Application state
 let candidature = [candidatura1, candidatura2, candidatura3];
 
+//Vista Filtrata
+let candidatureFiltrate = undefined;
+
+//SORTING 
+const statusOrdinamento = document.getElementById("listStatus");
+const selectData = document.getElementById("sortBy");
+const selectOrdine = document.getElementById("sortDir");
+
+// TIMER PER LOADING
+let timeoutID = null;
+
 // Normalizza data
 function normalizzaData(dateString) {
   // Rimuovi spazi
@@ -59,6 +70,13 @@ let storageCandidature = localStorage.getItem(STORAGE_KEY);
 
 if(storageCandidature){
     let candidatureDataNormalizzata = JSON.parse(storageCandidature).map(function(candidatura){
+        candidatura.date = normalizzaData(candidatura.date);
+        return candidatura;
+    })
+    candidature = candidatureDataNormalizzata;
+}
+else{
+    let candidatureDataNormalizzata = candidature.map(function(candidatura){
         candidatura.date = normalizzaData(candidatura.date);
         return candidatura;
     })
@@ -105,6 +123,14 @@ function renderCandidature(candidatureFiltrate){
         liCandidatura.appendChild(bottoneEdit);
 
     });
+
+    // NESSUN RISULTATO
+    if (listaDaMostrare.length === 0) {
+        statusOrdinamento.textContent = "Nessun Risultato";
+    } 
+    else if (statusOrdinamento.textContent === "Nessun Risultato") {
+        statusOrdinamento.textContent = "";
+    } 
 
 }
 
@@ -241,7 +267,7 @@ bottoneFiltra.addEventListener("click", function () {
 
 function applicaFiltro(testoDaCercare, statoDaCercare){
 
-    let candidatureFiltrate = candidature.filter(filtraCandidature);
+    candidatureFiltrate = candidature.filter(filtraCandidature);
 
     function filtraCandidature(candidatura){
         let query = testoDaCercare.trim().toLowerCase();
@@ -260,6 +286,10 @@ function applicaFiltro(testoDaCercare, statoDaCercare){
         return matchTesto && matchStato;
     }
 
+    if(statusOrdinamento.textContent != "Nessun Risultato"){
+        statusOrdinamento.textContent = "";
+    }
+
     renderCandidature(candidatureFiltrate);
 }
 
@@ -271,6 +301,10 @@ const bottoneResetFiltri = document.getElementById("resetFiltersButton");
 bottoneResetFiltri.addEventListener("click", function(){
     document.getElementById("searchInput").value = "";
     document.getElementById("statusFilter").value = "";
+    statusOrdinamento.textContent = "";
+    selectData.value = "";
+    selectOrdine.value = "asc";
+    candidatureFiltrate = undefined;
 
     renderCandidature();
 });
@@ -280,48 +314,52 @@ bottoneResetFiltri.addEventListener("click", function(){
 
 //SORTING
 
-const selectData = document.getElementById("sortBy");
-const selectOrdine = document.getElementById("sortDir");
-const statusOrdinamento = document.getElementById("listStatus");
-
 selectData.addEventListener("change", gestisciOrdinamento);
 
 selectOrdine.addEventListener("change", gestisciOrdinamento);
 
 function gestisciOrdinamento(){
-    console.log(selectData.value);
-    console.log(selectOrdine.value);
+    // Cancella eventuale "Pronto" programmato prima
+      if (timeoutID !== null) {
+            clearTimeout(timeoutID);
+            timeoutID = null;
+        }
+
     statusOrdinamento.textContent = "Caricamento";
-    setTimeout(function(){statusOrdinamento.textContent = "Pronto"}, 1000);
 
-    let vista = [...candidature];
-    if(typeof candidatureFiltrate !== 'undefined'){
-        vista = [...candidatureFiltrate];
-    }
+    timeoutID = setTimeout(function () {
+        let vista = [...candidature];
+        if(typeof candidatureFiltrate !== 'undefined'){
+            vista = [...candidatureFiltrate];
+        }
 
-    let vistaOrdinata = vista;
+        let vistaOrdinata = vista;
 
-    if(selectData.value === "company"){
-        vistaOrdinata = vista.sort(function(a, b) {
-            return a.company.localeCompare(b.company);
-        });
-    }
-    else if(selectData.value === "status"){
-        vistaOrdinata = vista.sort(function(a, b) {
-            return a.status.localeCompare(b.status);
-        });
-    }
-    else if(selectData.value === "date"){
-        vistaOrdinata = vista.sort(function(a, b) {
-            return a.date.localeCompare(b.date);
-        });
-    }
+        if(selectData.value === "company"){
+            vistaOrdinata = vista.sort(function(a, b) {
+                return a.company.localeCompare(b.company);
+            });
+        }
+        else if(selectData.value === "status"){
+            vistaOrdinata = vista.sort(function(a, b) {
+                return a.status.localeCompare(b.status);
+            });
+        }
+        else if(selectData.value === "date"){
+            vistaOrdinata = vista.sort(function(a, b) {
+                return a.date.localeCompare(b.date);
+            });
+        }
 
-    if(selectOrdine.value === "desc"){
-        vistaOrdinata = vistaOrdinata.reverse();
-    }
+        if(selectOrdine.value === "desc"){
+            vistaOrdinata = vistaOrdinata.reverse();
+        }
 
-    renderCandidature(vistaOrdinata);
-    
+        renderCandidature(vistaOrdinata);
+
+        if (vista.length > 0) {
+            statusOrdinamento.textContent = "Pronto";
+        }
+        timeoutID = null;
+    }, 400); 
 }
-

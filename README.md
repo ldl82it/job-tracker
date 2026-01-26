@@ -44,5 +44,22 @@ Open `index.html` in a browser or serve the project through a local server (e.g.
 Work in progress.
 
 Planned next steps:
-- Improve UI and styling
 - Replace prompt() editing with an HTML modal form (validated inputs for status/date)
+- UX review: clarify reset behavior (currently a single global "Reset view" button resets filters and sorting; consider separating filter reset and sort reset or improving visual hierarchy)
+- UI states: loading and empty states refinement
+- Export and import applications as JSON
+
+Security (planned):
+- Input validation (length limits, required fields, date sanity checks)
+- Whitelist for status values (reject anything outside allowed list)
+- Normalize and trim user input (e.g. company/role)
+- Safe rendering: never inject user input via innerHTML (use textContent)
+- Defensive programming: handle corrupted localStorage / unexpected data shapes
+- Basic anti-abuse: prevent duplicate submissions / double clicks
+- Add a Content Security Policy (CSP) header (document how to test locally)
+- Review for XSS risks and DOM-based injection patterns
+
+- Minor code cleanup (naming consistency, smaller functions, where declare variables, etc)
+- Extract constants (storage key, status list)
+- Improve UI and styling
+- Favicon

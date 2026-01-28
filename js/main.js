@@ -25,6 +25,9 @@ let candidatura3 = {
 // DOM references
 const ulCandidature = document.getElementById("applicationsList");
 const applicationForm = document.getElementById("applicationForm");
+const dialogEdit = document.getElementById("editDialog");
+const editCancelBtn = document.getElementById("editCancel");
+const editSaveBtn = document.getElementById("editSave");
 
 // Application state
 let candidature = [candidatura1, candidatura2, candidatura3];
@@ -193,8 +196,10 @@ function cancellaCandidatura(idCancellare){
 }
 
 
-//Funzione che modifica candidatura
+//Funzione che modifica candidatura con popup modale
 function modificaCandidatura(idModificare){
+
+    dialogEdit.showModal();
 
     function richiamaCandidatura(candidatura) {
         return candidatura.id === idModificare;
@@ -206,47 +211,55 @@ function modificaCandidatura(idModificare){
         return;
     }
 
-    let newCompany = prompt("Company", candidaturaDaModificare.company);
-    if ((newCompany === "") || (newCompany === null)){
-        return; //break out of the function early
-    }
-    let newRole = prompt("Role", candidaturaDaModificare.role);
-    if ((newRole === "") || (newRole === null)){
-        return; //break out of the function early
-    }
-    let newStatus = prompt("Status", candidaturaDaModificare.status);
-    if ((newStatus === "") || (newStatus === null)){
-        return; //break out of the function early
-    }
-    let newDate = prompt("Date", candidaturaDaModificare.date);
-    if ((newDate === "") || (newDate === null)){
-        return; //break out of the function early
-    }
+    const campoEditCompany = document.getElementById("editCompany");
+    const campoEditRole = document.getElementById("editRole");
+    const campoEditStatus = document.getElementById("editStatus");
+    const campoEditDate = document.getElementById("editDate");
 
-    let candidaturaAggiornata = {
-        company:newCompany,
-        role:newRole,
-        status:newStatus, 
-        date:normalizzaData(newDate),
-        id:idModificare
-    }
+    campoEditCompany.value = candidaturaDaModificare.company;
+    campoEditRole.value = candidaturaDaModificare.role;
+    campoEditStatus.value = candidaturaDaModificare.status;
+    campoEditDate.value = candidaturaDaModificare.date;
 
-    //Aggiorna array candidature
-    let candidatureAggiornate = candidature.map(function(candidatura){
-        if(candidatura.id === idModificare){
-            return candidaturaAggiornata;
+
+    editSaveBtn.addEventListener("click", function () {
+
+        if((campoEditCompany.value === "") || (campoEditCompany.value === null) || (campoEditRole.value === "") || (campoEditRole.value === null) || (campoEditStatus.value === "") || (campoEditStatus.value === null) || (campoEditDate.value === "") || (campoEditDate.value === null)){
+            alert("Completare tutti i campi");
+            return; //break out of the function early
         }
-        else{
-            return candidatura;
+
+        let candidaturaAggiornata = {
+            company:campoEditCompany.value,
+            role:campoEditRole.value,
+            status:campoEditStatus.value, 
+            date:campoEditDate.value,
+            id:idModificare
         }
-    })
 
-    candidature = candidatureAggiornate;
+        let candidatureAggiornate = candidature.map(function(candidatura){
+            if(candidatura.id === idModificare){
+                return candidaturaAggiornata;
+            }
+            else{
+                return candidatura;
+            }
+        })
 
-    // SALVA CANDIDATURE IN BROWSER
-    saveCandidature()
+        candidature = candidatureAggiornate;
 
-    renderCandidature();
+        saveCandidature()
+
+        renderCandidature();
+
+        dialogEdit.close();
+    }, {once: true});
+
+
+    editCancelBtn.addEventListener("click", function () {
+        dialogEdit.close();
+    }, {once: true});
+
 }
 
 

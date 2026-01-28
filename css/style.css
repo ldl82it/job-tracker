@@ -22,3 +22,36 @@ body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial
   gap: 6px;
   font-size: 14px;
 }
+
+
+
+/* MODAL */
+
+dialog {
+  width: min(520px, calc(100% - 24px));
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+#editForm {
+  display: grid;
+  gap: 12px;
+}
+
+#editForm > div {
+  display: grid;
+  gap: 6px;
+}
+
+.dialogActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 0;
+  margin: 8px 0 0;
+}

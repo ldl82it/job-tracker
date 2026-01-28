@@ -118,6 +118,53 @@
         <p id="listStatus" class="small" aria-live="polite"></p>
         <ul id="applicationsList" class="list"></ul>
       </section>
+
+
+
+    <!-- EDIT MODAL -->
+    <dialog id="editDialog" aria-labelledby="editDialogTitle">
+      <form id="editForm" method="dialog">
+        <h2 id="editDialogTitle">Modifica candidatura</h2>
+
+        <!-- serve a JS per sapere quale candidatura si edita -->
+        <input type="hidden" id="editId" name="editId" />
+
+        <div>
+          <label for="editCompany">Azienda</label>
+          <input type="text" id="editCompany" name="editCompany" required />
+        </div>
+
+        <div>
+          <label for="editRole">Ruolo</label>
+          <input type="text" id="editRole" name="editRole" required />
+        </div>
+
+        <div>
+          <label for="editStatus">Stato</label>
+          <select id="editStatus" name="editStatus" required>
+            <option value="">Seleziona stato</option>
+            <option value="Inviata">Inviata</option>
+            <option value="Colloquio">Colloquio</option>
+            <option value="Standby">Standby</option>
+            <option value="Rifiutata">Rifiutata</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="editDate">Data</label>
+          <input type="date" id="editDate" name="editDate" required />
+        </div>
+
+        <menu class="dialogActions">
+          <button type="button" id="editCancel">Annulla</button>
+          <button type="submit" id="editSave">Salva</button>
+        </menu>
+      </form>
+    </dialog>
+
+
+
+
     </main>
 
     <script type="module" src="./js/main.js"></script>

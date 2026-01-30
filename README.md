@@ -73,7 +73,6 @@ This project is also used as a learning ground for client-side security concepts
 
 ### Planned next steps (V1)
 
-* Add confirmation step before deleting an application (prevent accidental deletions)
 * Replace `alert()` with inline form feedback (non-blocking, accessible messages)
 * Refactor edit modal event handling (replace `once: true` listeners with a persistent handler and explicit edit state)
 * UX review: clarify reset behavior (currently a single global “Reset view” button resets filters and sorting)
@@ -111,3 +110,13 @@ This project is also used as a learning ground for client-side security concepts
 * Basic authentication (optional, learning-oriented)
 * Standardized API error handling
 * Reuse the same frontend logic with a different data layer
+
+
+## License
+
+This project is publicly available for **portfolio and educational purposes only**.
+
+The source code may be viewed and studied, but **may not be used, copied, modified, or
+redistributed** without explicit permission from the author.
+
+See the `LICENSE` file for full details.

@@ -181,6 +181,10 @@ function submitApplicationForm(event){
 // Funzione che cancella id
 function cancellaCandidatura(idCancellare){
 
+    if (confirm("Vuoi davvero cancellare la candidatura?") != true) {
+        return;
+    }
+
     let newCandidature = candidature.filter(togliIdScelto);
 
     function togliIdScelto(tuttiID){
@@ -190,7 +194,7 @@ function cancellaCandidatura(idCancellare){
     candidature = newCandidature;
 
     // SALVA CANDIDATURE IN BROWSER
-    saveCandidature()
+    saveCandidature();
 
     renderCandidature();
 }

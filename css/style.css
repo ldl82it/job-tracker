@@ -55,3 +55,28 @@ dialog::backdrop {
   padding: 0;
   margin: 8px 0 0;
 }
+
+
+/* ALERT */ 
+
+.field {
+  display: grid;
+  gap: 0.35rem;
+  margin-bottom: 0.85rem;
+}
+
+.fieldError {
+  min-height: 1.1em; /* evita “salti” layout */
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+
+.field.has-error .fieldError {
+  /* il colore lo lasciamo a te se vuoi, ma puoi anche usare currentColor */
+}
+
+.field.has-error input,
+.field.has-error select {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}

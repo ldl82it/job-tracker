@@ -153,10 +153,42 @@ function submitApplicationForm(event){
     const id = crypto.randomUUID();
 
     /* VALIDAZIONE CAMPI NON VUOTI */
-    if ((company.trim().length === 0) || (role.trim().length === 0) || (status.trim().length === 0) || (date.trim().length === 0)){
-        alert("Riempi tutti i campi");
+
+    let erroreCampoVuoto = false;
+
+    let puntatori = [
+        {
+            denominazione: "company",
+            valore: company   
+        },
+        {
+            denominazione: "role",
+            valore: role   
+        },
+        {
+            denominazione: "status",
+            valore: status   
+        },
+        {
+            denominazione: "date",
+            valore: date   
+        }       
+    ];
+
+    puntatori.forEach(function(puntatore) {
+        if(puntatore.valore.trim().length === 0){
+            setFieldError("field-"+puntatore.denominazione, puntatore.denominazione+"Error", "Campo Mancante");
+            erroreCampoVuoto = true;
+        }
+        else{
+            setFieldError("field-"+puntatore.denominazione, puntatore.denominazione+"Error", "");
+        }
+    });
+
+    if(erroreCampoVuoto){
         return;
-    }
+    }  
+
 
     let nuovaCandidatura = {
         company:company,
@@ -225,18 +257,47 @@ function modificaCandidatura(idModificare){
     campoEditStatus.value = candidaturaDaModificare.status;
     campoEditDate.value = candidaturaDaModificare.date;
 
+    editSaveBtn.onclick = function () {
 
-    editSaveBtn.addEventListener("click", function () {
+        let erroreCampoEditVuoto = false;
 
-        if((campoEditCompany.value === "") || (campoEditCompany.value === null) || (campoEditRole.value === "") || (campoEditRole.value === null) || (campoEditStatus.value === "") || (campoEditStatus.value === null) || (campoEditDate.value === "") || (campoEditDate.value === null)){
-            alert("Completare tutti i campi");
-            return; //break out of the function early
+        let puntatoriEdit = [
+            {
+                denominazione: "editCompany",
+                valore: campoEditCompany.value
+            },
+            {
+                denominazione: "editRole",
+                valore: campoEditRole.value
+            },
+            {
+                denominazione: "editStatus",
+                valore: campoEditStatus.value
+            },
+            {
+                denominazione: "editDate",
+                valore: campoEditDate.value
+            }
+        ];
+
+        puntatoriEdit.forEach(function(puntatore) {
+            if(puntatore.valore.trim().length === 0){
+                setFieldError("field-"+puntatore.denominazione, puntatore.denominazione+"Error", "Campo Mancante");
+                erroreCampoEditVuoto = true;
+            }
+            else{
+                setFieldError("field-"+puntatore.denominazione, puntatore.denominazione+"Error", "");
+            }
+        });
+
+        if(erroreCampoEditVuoto){
+            return;
         }
 
         let candidaturaAggiornata = {
             company:campoEditCompany.value,
             role:campoEditRole.value,
-            status:campoEditStatus.value, 
+            status:campoEditStatus.value,
             date:campoEditDate.value,
             id:idModificare
         }
@@ -252,17 +313,16 @@ function modificaCandidatura(idModificare){
 
         candidature = candidatureAggiornate;
 
-        saveCandidature()
+        saveCandidature();
 
         renderCandidature();
 
         dialogEdit.close();
-    }, {once: true});
+    };
 
-
-    editCancelBtn.addEventListener("click", function () {
+    editCancelBtn.onclick = function () {
         dialogEdit.close();
-    }, {once: true});
+    };
 
 }
 
@@ -379,4 +439,36 @@ function gestisciOrdinamento(){
         }
         timeoutID = null;
     }, 400); 
+}
+
+
+// FUNZIONE ALERT
+
+function setFieldError(fieldId, errorId, message){
+
+    if(!fieldId || !errorId){
+        console.warn("Errore tipo 1 in funzione Alert");
+        return;
+    }
+
+    let divSbagliato = document.getElementById(fieldId);
+    let paragrafoMessaggio = document.getElementById(errorId);
+
+    
+    if(!divSbagliato || !paragrafoMessaggio){
+        console.warn("Errore tipo 2 in funzione Alert");
+        return;
+    }    
+    else if(typeof message != 'string'){
+        console.warn("Errore tipo 3 in funzione Alert");
+        return;
+    }
+    else if(message){
+        paragrafoMessaggio.textContent = message;
+        divSbagliato.classList.add("has-error");
+    }
+    else{
+        divSbagliato.classList.remove("has-error");
+        paragrafoMessaggio.textContent = "";
+    }
 }

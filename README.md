@@ -51,6 +51,7 @@ Key design choices were made consciously to support learning and maintainability
 * **HTML modal instead of `prompt()`**: improves user experience and allows structured validation.
 * **ISO date format**: ensures correct comparisons and future backend compatibility.
 * **Progressive versions (V1 → V2 → V3)**: features first, architecture later, backend last.
+* **Validation** is handled entirely in JavaScript to ensure UX consistency and control flow.
 
 ---
 
@@ -73,8 +74,9 @@ This project is also used as a learning ground for client-side security concepts
 
 ### Planned next steps (V1)
 
-* Replace `alert()` with inline form feedback (non-blocking, accessible messages)
-* Refactor edit modal event handling (replace `once: true` listeners with a persistent handler and explicit edit state)
+* ✅ Replace `alert()` with inline form feedback (non-blocking, accessible messages)
+* ✅ Refactor edit modal event handling (remove `once: true`, use persistent handlers and explicit dialog control)
+
 * UX review: clarify reset behavior (currently a single global “Reset view” button resets filters and sorting)
 * UI states: loading and empty states refinement
 * Export and import applications as JSON

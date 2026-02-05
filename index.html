@@ -67,45 +67,34 @@
         <h2 id="form-title">Nuova candidatura</h2>
 
         <form id="applicationForm">
-          <div>
+          <div class="field" id="field-company">
             <label for="company">Azienda</label>
-            <input
-              type="text"
-              id="company"
-              name="company"
-              required
-            />
+            <input type="text" id="company" name="company" aria-describedby="companyError" />
+            <p class="fieldError" id="companyError" aria-live="polite"></p>
           </div>
 
-          <div>
+          <div class="field" id="field-role">
             <label for="role">Ruolo</label>
-            <input
-              type="text"
-              id="role"
-              name="role"
-              required
-            />
+            <input type="text" id="role" name="role" aria-describedby="roleError" />
+            <p class="fieldError" id="roleError" aria-live="polite"></p>
           </div>
 
-          <div>
+          <div class="field" id="field-status">
             <label for="status">Stato</label>
-            <select id="status" name="status" required>
+            <select id="status" name="status" aria-describedby="statusError">
               <option value="">Seleziona stato</option>
               <option value="Inviata">Inviata</option>
               <option value="Colloquio">Colloquio</option>
               <option value="Standby">Standby</option>
               <option value="Rifiutata">Rifiutata</option>
             </select>
+            <p class="fieldError" id="statusError" aria-live="polite"></p>
           </div>
 
-          <div>
+          <div class="field" id="field-date">
             <label for="date">Data</label>
-            <input
-              type="date"
-              id="date"
-              name="date"
-              required
-            />
+            <input type="date" id="date" name="date" aria-describedby="dateError" />
+            <p class="fieldError" id="dateError" aria-live="polite"></p>
           </div>
 
           <button type="submit">Aggiungi candidatura</button>
@@ -129,35 +118,39 @@
         <!-- serve a JS per sapere quale candidatura si edita -->
         <input type="hidden" id="editId" name="editId" />
 
-        <div>
+        <div class="field" id="field-editCompany">
           <label for="editCompany">Azienda</label>
-          <input type="text" id="editCompany" name="editCompany" required />
+          <input type="text" id="editCompany" name="editCompany" aria-describedby="editCompanyError" />
+          <p class="fieldError" id="editCompanyError" aria-live="polite"></p>
         </div>
 
-        <div>
+        <div class="field" id="field-editRole">
           <label for="editRole">Ruolo</label>
-          <input type="text" id="editRole" name="editRole" required />
+          <input type="text" id="editRole" name="editRole" aria-describedby="editRoleError" />
+          <p class="fieldError" id="editRoleError" aria-live="polite"></p>
         </div>
 
-        <div>
+        <div class="field" id="field-editStatus">
           <label for="editStatus">Stato</label>
-          <select id="editStatus" name="editStatus" required>
+          <select id="editStatus" name="editStatus" aria-describedby="editStatusError">
             <option value="">Seleziona stato</option>
             <option value="Inviata">Inviata</option>
             <option value="Colloquio">Colloquio</option>
             <option value="Standby">Standby</option>
             <option value="Rifiutata">Rifiutata</option>
           </select>
+          <p class="fieldError" id="editStatusError" aria-live="polite"></p>
         </div>
 
-        <div>
+        <div class="field" id="field-editDate">
           <label for="editDate">Data</label>
-          <input type="date" id="editDate" name="editDate" required />
+          <input type="date" id="editDate" name="editDate" aria-describedby="editDateError" />
+          <p class="fieldError" id="editDateError" aria-live="polite"></p>
         </div>
 
         <menu class="dialogActions">
           <button type="button" id="editCancel">Annulla</button>
-          <button type="submit" id="editSave">Salva</button>
+          <button type="button" id="editSave">Salva</button>
         </menu>
       </form>
     </dialog>

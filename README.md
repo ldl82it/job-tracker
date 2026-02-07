@@ -76,10 +76,10 @@ This project is also used as a learning ground for client-side security concepts
 
 * ✅ Replace `alert()` with inline form feedback (non-blocking, accessible messages)
 * ✅ Refactor edit modal event handling (remove `once: true`, use persistent handlers and explicit dialog control)
+* ✅ Export and import applications as JSON
 
 * UX review: clarify reset behavior (currently a single global “Reset view” button resets filters and sorting)
 * UI states: loading and empty states refinement
-* Export and import applications as JSON
 * Minor code cleanup (naming consistency, smaller functions, clearer variable scope)
 * Extract constants (storage key, status list)
 * Improve UI and styling (responsive layout, accessibility, visual hierarchy)

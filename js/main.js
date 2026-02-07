@@ -472,3 +472,86 @@ function setFieldError(fieldId, errorId, message){
         paragrafoMessaggio.textContent = "";
     }
 }
+
+
+
+//* ESPORTA JSON *//
+
+
+let esportaJson = document.getElementById("exportJsonBtn");
+let importaJson = document.getElementById("importJsonInput");
+
+esportaJson.addEventListener("click", function () {
+        
+    const jsonString = JSON.stringify(candidature, null, 2);
+
+    let blob = new Blob([jsonString], { type: "application/json" })
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download= "Lista candidature " + (new Date()).toDateString() + ".json";
+
+    link.click()
+
+    URL.revokeObjectURL(url);
+
+});
+
+function importFromJson(file){
+    const reader = new FileReader();
+
+    reader.onload = function() {
+        try {
+            const contenutoFile = JSON.parse(reader.result);
+            console.log(contenutoFile);
+
+            function checkOggetto(elemento){
+                return (typeof elemento === "object") && (elemento !== null) && (!Array.isArray(elemento)) && (elemento.hasOwnProperty("company")) && (elemento.hasOwnProperty("role")) && (elemento.hasOwnProperty("status")) && (elemento.hasOwnProperty("date")) && (typeof elemento.company === "string") && (typeof elemento.role === "string") && (typeof elemento.status === "string") && (typeof elemento.date === "string") && ((elemento.company).trim() !== "") && ((elemento.role).trim() !== "") && ((elemento.status).trim() !== "") && ((elemento.date).trim() !== "");
+            }
+
+            if((Array.isArray(contenutoFile)) && (contenutoFile.every(checkOggetto))){
+                candidature = contenutoFile;
+                renderCandidature();
+                saveCandidature();
+                importaJson.value = "";
+            }
+            else{
+                console.warn("File json non compatibile");
+                importaJson.value = "";
+                return;
+            }
+
+        } catch (error) {
+            console.warn("Errore nella lettura del file JSON");
+            importaJson.value = "";
+            return;
+        }
+    };
+
+    reader.onerror = function() {
+        console.warn("Errore nella lettura del file JSON");
+        importaJson.value = "";
+        return;
+    };
+
+    reader.readAsText(file);
+} 
+
+importaJson.addEventListener("change", function (event){
+
+    let fileCaricato = event.target.files[0];
+
+    if(!fileCaricato){
+        return;
+    }
+
+    if(fileCaricato.type != "application/json"){
+        console.warn("invalid file format");
+        return;
+    }
+
+    importFromJson(fileCaricato);
+
+});
